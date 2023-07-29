@@ -1,14 +1,13 @@
-// runtime type checking - javascript
-// static type checking - typescript
+import fastify from "fastify";
 
-interface User {
-  birthday: number
-}
+const app = fastify()
 
-function calculateAgeToTheBirthday(user: User) {
-  return new Date().getFullYear() * user.birthday
-}
+app.get('/hello', () => {
+  return 'Hello world!'
+})
 
-calculateAgeToTheBirthday({
-  birthday: 2002
+app.listen({
+  port: 3000
+}).then(() => {
+  console.log('server is running!!!')
 })
