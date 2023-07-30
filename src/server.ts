@@ -1,7 +1,7 @@
 import fastify from 'fastify'
 import { knex } from './database'
 import crypto from 'node:crypto'
-import { env } from './env.index'
+import { env } from './env'
 
 const app = fastify()
 
