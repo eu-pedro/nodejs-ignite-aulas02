@@ -1,7 +1,7 @@
-import { it, beforeAll, afterAll, describe, expect } from 'vitest'
+import { it, beforeAll, afterAll, describe, expect, beforeEach } from 'vitest'
+import { execSync } from 'node:child_process'
 import request from 'supertest'
 import { app } from '../src/app'
-import { string } from 'zod'
 
 describe('Transaction routes', () => {
   beforeAll(async () => {
@@ -12,8 +12,13 @@ describe('Transaction routes', () => {
     await app.close()
   })
 
+  beforeEach(() => {
+    execSync('pnpm run knex migrate:rollback --all')
+    execSync('pnpm run knex migrate:latest')
+  })
+
   it('user can create a new transaction', async () => {
-    const response = await request(app.server)
+    await request(app.server)
       .post('/transactions')
       .send({
         title: 'New transaction',
@@ -21,8 +26,6 @@ describe('Transaction routes', () => {
         type: 'credit',
       })
       .expect(201)
-
-    console.log(response.get('Set-Cookie'))
   })
 
   it('should be able to list all transactions', async () => {
